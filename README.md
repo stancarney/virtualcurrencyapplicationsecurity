@@ -20,6 +20,8 @@ Like protective clothing, the way to approach network security is with layers. A
 
 Below is an example of a network utilizing two firewalls, an internal and an external, running intrusion protection systems. The NAT Firewall/IPS and the External Firewall/IPS could be comprised into one physical device as long as the outbound traffic restrictions mentioned below are respected. The rest of the images in this document may show several firewalls but in reality they could be combined. Having an external firewall and an internal firewall that are physically separated is still a good idea though. Having one firewall with all traffic routing through it would represent a signal point in which an attacker could gain access to everything.
 
+![Example Network](example_network.svg)
+
 # Public Interface
 
 Historically disclosing your public IP wasn’t a big deal. Today it should be avoided at all costs. There are cases where historical information available on sites like www.domaintools.com allowed attackers to determine the hosting provider for a site, from the IP block owner, after they introduced a DDoS protection system and remotely socially engineer their way into gaining root access to a server.
@@ -28,11 +30,13 @@ Use a DDoS protection service such as Cloud Fare. They have a fantastic informat
 
 Even with a DDoS protection service in front of your public IP a listening socket should not terminate on an internal machine that can access sensitive data.
 
+![Insecure](insecure.svg)
 
 There is a bunch of things wrong with the above diagram, it has been simplified to articulate a point, but the one in question is if an attacker can exploit the application server and gain escalated privileges they are right next door to your sensitive data. In fact they don’t need to even try to exploit the database. They probably could just mimic another connection from your application server, assuming it has the ability to read data from the database, and call it a day.
 
 What [PCI](#pci) and other security practices call for is a level of indirection between the internet and servers that have direct access to sensitive data. Ideally at Layer 7 of the OSI model.
 
+![Insecure but with a Web Server!](insecure_webserver.svg)
 
 In the above network, which still has many things wrong with it, there is now a level of indirection between the internet and the only server that has direct access to sensitive data. In this case the web server is running Nginx or Apache and configured to ‘proxy’ the requests back to the application server. It doesn’t have to perform any other activity like serving static content, it is just there for a level of indirection. The proxying causes the web server to open a new connection to the application server and translate the traffic between the connected internal socket and the external socket using standard HTTP. If an attacker is successful in exploiting Nginx and gains shell access over a socket they still can’t do much. Maybe snoop other traffic flowing through the server, which your host based intrusion detection (HID) system should alert on.
 
@@ -42,6 +46,7 @@ If you are reading this document in a linear fashion we now have a DDoS protecti
 
 Rather than waiting for a pastebin.com to show up it is better to isolate individual server classes from each other behind firewalls running an intrustion protection system [(IPS)](#ids-vs-ips) and only open ports between the layers for required services. For example if your application server is the only class of server that needs to talk to your database server, open just the required port between the application server network and the database server network. This should be done between every class of server. If your network has 3 different classes of servers, it should have 3 different networks that are only traversable by passing through an IPS.
 
+![Layered Network](layers.svg)
 
 In this example incoming HTTP traffic passes through a Firewall/IPS device. It actively inspects traffic looking for ‘rule violations’ and when one is detected it actively blocks the remote address and drops the connection. It is important that it also sends out alerts to ensure you are up to speed on what is happening. The web server proxies the HTTP request to the application server which passes through another Firewall/IPS combination device. The application is then able to read and write to the database by connecting through a Firewall/IPS device in much the same fashion.
 
@@ -49,11 +54,13 @@ In this example incoming HTTP traffic passes through a Firewall/IPS device. It a
 
 Intrusion Detection Systems (IDS) typically sit independent of firewalls. They passively monitor all traffic presented to them trying to find rule matches to alert on. A common configuration for IDS is to enable port ‘monitoring’ on a switch so that all network traffic is ‘mirrored’ on an interface available to the IDS system. Once a rule match is found the IDS system sends out an alert and it is up to the alert recipients to determine the course of action to take. If your internal IDS system detects a port scan originating from your web server against your application server you better sort it out in a hurry.
 
+![Intrusion Detection System](IDS.svg)
 
 In the above diagram the red arrows represent ‘mirrored’ traffic being sent to the IDS system for inspection and rule matching. The IDS would send out alerts when a rule is matched, but that is it. You would have to manually intervene to stop the ongoing threat.
 
 An Intrusion Protection System (IPS) is effectively the same as an IDS system but instead of hanging off a monitoring switch port it is normally part of or positioned very close to firewalls. When a rule match is detected not only does the IPS system send an alert it actively blocks the source (or destination) and drops the connection based on how the rule was configured. This has advantages when something like a port scan is detected it will block the offending host and send an alert preventing anymore damage from being down, opposed to just sending an alert. I don’t think anybody will argue that taking down your site in the case a breach is a bad thing. False positives on the other hand could be problematic if you don’t fully understand the role each network is supposed to be playing.
 
+![Intrusion Protection System](IPS.svg)
 
 The above diagram is the same layout as the IDS diagram above with the exception of the IPS system being deployed inline. The red arrow represents the traffic being inspected and blocked at the IPS, before it enters the rest of the network.
 
@@ -73,6 +80,7 @@ Authorized outbound traffic should be accounted for by limiting the protocol and
 
 Never use the same IP address as your web server for outbound connections. All traffic originating from within your production environment should egress out through a different public IP address. Ideally an IP address in which there are no listening services.
 
+![Layers with separate outbound NAT address](layers_outbound_nat.svg)
 
 The above diagram contains just as many firewalls as it does other systems. In reality they don’t need to be physically separate firewalls but it is a good idea. If you want to go completely paranoid use a different firewall manufacturer at each level in case an exploit is discovered in one of them. 
 
@@ -94,14 +102,14 @@ It is possible to make the management console an extension of your office or oth
 
 Hosting your application on popular open source software is preferred. Even if you don’t need access to the source code you are able to benefit from a community that shares your concerns on security (hopefully). There are several hardening guides available on the internet depending on your operating system of choice. Each will contain a bunch of suggestions on how to secure the OS from unauthorized access. The core of each list will contain things like:
 
-Disable unused services
-i.e. nsfd, portmap, etc...
-Remove unused software packages
-i.e. mysql, X, KDE, etc...
-Disable direct root/admin login
-Disable all shared accounts
-Enforce long passwords
-http://xkcd.com/936/
+* Disable unused services
+ * i.e. nsfd, portmap, etc...
+* Remove unused software packages
+ * i.e. mysql, X, KDE, etc...
+* Disable direct root/admin login
+ * Disable all shared accounts
+* Enforce long passwords
+ * http://xkcd.com/936/
 
 It is also a good idea to use a host based intrusion detection (HID*) system like OSSEC to monitor files and running services on individual servers for changes. It requires some setup but it is worth knowing when an important file changes without your knowledge.
 
