@@ -34,18 +34,18 @@ There is a bunch of things wrong with the above diagram, it has been simplified 
 What [PCI](#pci) and other security practices call for is a level of indirection between the internet and servers that have direct access to sensitive data. Ideally at Layer 7 of the OSI model.
 
 
-In the above network, which still has many things wrong with it, there is now a level of indirection between the internet and the only server that has direct access to sensitive data. In this case the web server is running Nginx or Apache and configured to ‘proxy’ the requests back to the application server. It doesn’t have to perform any other activity like serving static content, it is just there for a level of indirection. The proxying causes the web server to open a new connection to the application server and translate the traffic between the connected internal socket and the external socket using standard HTTP. If an attacker is successful in exploiting Nginx and gains shell access over a socket they still can’t do much. Maybe snoop other traffic flowing through the server, which your host based intrusion detection (HID*) system should alert on.
+In the above network, which still has many things wrong with it, there is now a level of indirection between the internet and the only server that has direct access to sensitive data. In this case the web server is running Nginx or Apache and configured to ‘proxy’ the requests back to the application server. It doesn’t have to perform any other activity like serving static content, it is just there for a level of indirection. The proxying causes the web server to open a new connection to the application server and translate the traffic between the connected internal socket and the external socket using standard HTTP. If an attacker is successful in exploiting Nginx and gains shell access over a socket they still can’t do much. Maybe snoop other traffic flowing through the server, which your host based intrusion detection (HID) system should alert on.
 
 # Layers
 
 If you are reading this document in a linear fashion we now have a DDoS protection service ‘layer’ in front of our public IP address, a web server listening on the public interface before proxying requests back to our single application server which reads and writes data to our database. It is a good start and would put you in front of some of the other configurations I’ve seen over the years but in reality the system would still be highly exposed and to make matters worse if something ever happened you may never know. The attacker would most likely cover their tracks and if you did manage to determine your were exploited, say an anonymous pastebin.com post containing all your users, you would be in the dark about how it was done.
 
-Rather than waiting for a pastebin.com to show up it is better to isolate individual server classes from each other behind firewalls running an intrustion protection system (IPS*) and only open ports between the layers for required services. For example if your application server is the only class of server that needs to talk to your database server, open just the required port between the application server network and the database server network. This should be done between every class of server. If your network has 3 different classes of servers, it should have 3 different networks that are only traversable by passing through an IPS.
+Rather than waiting for a pastebin.com to show up it is better to isolate individual server classes from each other behind firewalls running an intrustion protection system [(IPS)](#ids-vs-ips) and only open ports between the layers for required services. For example if your application server is the only class of server that needs to talk to your database server, open just the required port between the application server network and the database server network. This should be done between every class of server. If your network has 3 different classes of servers, it should have 3 different networks that are only traversable by passing through an IPS.
 
 
 In this example incoming HTTP traffic passes through a Firewall/IPS device. It actively inspects traffic looking for ‘rule violations’ and when one is detected it actively blocks the remote address and drops the connection. It is important that it also sends out alerts to ensure you are up to speed on what is happening. The web server proxies the HTTP request to the application server which passes through another Firewall/IPS combination device. The application is then able to read and write to the database by connecting through a Firewall/IPS device in much the same fashion.
 
-# Intrusion Detection vs Intrusion Protection
+# IDS vs IPS
 
 Intrusion Detection Systems (IDS) typically sit independent of firewalls. They passively monitor all traffic presented to them trying to find rule matches to alert on. A common configuration for IDS is to enable port ‘monitoring’ on a switch so that all network traffic is ‘mirrored’ on an interface available to the IDS system. Once a rule match is found the IDS system sends out an alert and it is up to the alert recipients to determine the course of action to take. If your internal IDS system detects a port scan originating from your web server against your application server you better sort it out in a hurry.
 
@@ -126,7 +126,7 @@ Passwords is area where PCI falls down in my opinion. In ‘Requirement 8: Assig
  * Who doesn’t just increment the number at the end by one anyway? 
  * MyPassword1, MyPassword2, etc... 
 
-Don’t share accounts. Your services can run as a unique user but multiple people shouldn’t be logging in as www or any other shared account. Users should login with their own accounts. Once logged in authorized users could use sudo or other privilege escalation mechanisms. Rootsh* works well on Unix based systems to capture users sessions when they request root access. All session commands are sent to logs for archival and review if needed, although sometimes they can be tricky to understand due to control keys being used. Running rootsh on all production servers is ideal.
+Don’t share accounts. Your services can run as a unique user but multiple people shouldn’t be logging in as www or any other shared account. Users should login with their own accounts. Once logged in authorized users could use sudo or other privilege escalation mechanisms. [Rootsh](#rootsh) works well on Unix based systems to capture users sessions when they request root access. All session commands are sent to logs for archival and review if needed, although sometimes they can be tricky to understand due to control keys being used. Running rootsh on all production servers is ideal.
 
 As your environment grows having a centralized authentication server eases administration. Creating another class of server hosting OpenLDAP or a similar service in which all servers in the production environment rely on for authentication helps when adding or removing users to the environment. If a central authentication server is used make sure it is locked down like all other hosts in the production environment. Only authorized users should be allowed to add, modify or remove users and permissions. Alerting for any change, authorized or not, is also a good idea.
 
@@ -144,11 +144,11 @@ Using this approach all sensitive data stored in your application’s database i
 
 # Key Custodians
 
-The concept of ‘Key Custodians’ are directly out of PCI compliance (and NIST*). They are people in your organization who have the added role of memorizing a unique passphrase used by the encryption server when it is started. Ideally there are N key custodians and the encryption server would only require N-1 (or similar) passphrases to be entered on application start in order to unlock the other keys for use.
+The concept of ‘Key Custodians’ are directly out of PCI compliance (and [NIST](#nist)). They are people in your organization who have the added role of memorizing a unique passphrase used by the encryption server when it is started. Ideally there are N key custodians and the encryption server would only require N-1 (or similar) passphrases to be entered on application start in order to unlock the other keys for use.
 
 # Logging
 
-Centralizing, reviewing and alerting on events that happen within your production environment is key in ensuring a secure application. Logs also need to be protected from manipulation as it is a common technique of attackers to attempt to delete logs in order to cover up their tracks. Immediately copying logs off servers to a protected centralized log server using something like syslog (rsyslog, ksyslog, etc…) and Log-o* works well.
+Centralizing, reviewing and alerting on events that happen within your production environment is key in ensuring a secure application. Logs also need to be protected from manipulation as it is a common technique of attackers to attempt to delete logs in order to cover up their tracks. Immediately copying logs off servers to a protected centralized log server using something like syslog (rsyslog, ksyslog, etc…) and (Log-o)[#log-o] works well.
 
 Never log sensitive data like passwords, private keys, etc...
 
@@ -172,9 +172,9 @@ I’ve recently dropped using CDN’s from anything I’ve done recently and sta
 
 ## Passwords
 
-The information in the Hosts section on passwords is applicable to your application as well. Try encourage the use of long passphrases, 12+ chars long and don’t limit what characters they can use. Recent studies have shown that password strength meters help encourage users to pick stronger passwords. Dropbox has a fantastic strength meter called zxcvbn*.
+The information in the Hosts section on passwords is applicable to your application as well. Try encourage the use of long passphrases, 12+ chars long and don’t limit what characters they can use. Recent studies have shown that password strength meters help encourage users to pick stronger passwords. Dropbox has a fantastic strength meter called (zxcvbn)[#zxcvbn].
 
-Use something like PBKDF2, bcrypt, or scrypt for stored passwords. PBKDF2 seems to be falling out of favour recently due it’s ability to be run efficiently on GPU’s.
+Use something like (PBKDF2)[#pbkdf2], (bcrypt)[#bcrypt], or (scrypt)[#scrypt] for stored passwords. PBKDF2 seems to be falling out of favour recently due it’s ability to be run efficiently on GPU’s.
 
 ## 2-Factor
 
