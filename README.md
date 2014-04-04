@@ -16,7 +16,7 @@ Try to ensure any inappropriate behaviour would have to involve collusion of mul
 
 # Network
 
-Like protective clothing, the way to approach network security is with layers. Any route into a production environment should involve crossing multiple layers, both on the way in and on the way out. Each layer should be locked down to a specific class of server performing one role, like an application server, or a database server. Don’t combine roles onto a single server. Deploying an Intrusion Protection System (IPS) between each layer that all traffic must transverse adds overhead and becomes difficult to do on some virtualized environments but if an outer layer is ever compromised you want abnormal internal traffic to light up alerts like a christmas tree.
+Like protective clothing, the way to approach network security is with layers. Any route into a production environment should involve crossing multiple layers, both on the way in and on the way out. Each layer should be locked down to a specific class of server performing one role, like an application server, or a database server. Don’t combine roles onto a single server. Deploying an Intrusion Protection System [(IPS)](#ids-vs-ips) between each layer that all traffic must transverse adds overhead and becomes difficult to do on some virtualized environments but if an outer layer is ever compromised you want abnormal internal traffic to light up alerts like a christmas tree.
 
 Below is an example of a network utilizing two firewalls, an internal and an external, running intrusion protection systems. The NAT Firewall/IPS and the External Firewall/IPS could be comprised into one physical device as long as the outbound traffic restrictions mentioned below are respected. The rest of the images in this document may show several firewalls but in reality they could be combined. Having an external firewall and an internal firewall that are physically separated is still a good idea though. Having one firewall with all traffic routing through it would represent a signal point in which an attacker could gain access to everything.
 
@@ -58,6 +58,8 @@ An Intrusion Protection System (IPS) is effectively the same as an IDS system bu
 The above diagram is the same layout as the IDS diagram above with the exception of the IPS system being deployed inline. The red arrow represents the traffic being inspected and blocked at the IPS, before it enters the rest of the network.
 
 For payment systems (especially virtual currencies) using an IPS on all perimeter interfaces (PCI requirement) and between all internal networks is the better approach. Think of them as the bulkheads on a ship. IDS was mentioned as there doesn’t yet appear to be a good way to integrate an IPS into some virtual environments.
+
+[Snort](#snort) is a very good, if not the best, IPS/IDS system available. It works well in combination with Linux or BSD based firewalls (a server with a bunch of network cards deployed in the role of a firewall).
 
 # Restrict Outbound
 
@@ -148,7 +150,7 @@ The concept of ‘Key Custodians’ are directly out of PCI compliance (and [NIS
 
 # Logging
 
-Centralizing, reviewing and alerting on events that happen within your production environment is key in ensuring a secure application. Logs also need to be protected from manipulation as it is a common technique of attackers to attempt to delete logs in order to cover up their tracks. Immediately copying logs off servers to a protected centralized log server using something like syslog (rsyslog, ksyslog, etc…) and (Log-o)[#log-o] works well.
+Centralizing, reviewing and alerting on events that happen within your production environment is key in ensuring a secure application. Logs also need to be protected from manipulation as it is a common technique of attackers to attempt to delete logs in order to cover up their tracks. Immediately copying logs off servers to a protected centralized log server using something like syslog (rsyslog, ksyslog, etc…) and [Log-o](#log-o) works well.
 
 Never log sensitive data like passwords, private keys, etc...
 
