@@ -107,17 +107,21 @@ It is also a good idea to use a host based intrusion detection (HID*) system lik
 
 Passwords is area where PCI falls down in my opinion. In ‘Requirement 8: Assign a unique ID to each person with computer access’ they state the following:
 
-* 8.5.9 Change user passwords at least every 90 days.
+> 8.5.9 Change user passwords at least every 90 days.
+
  * Changing a secure password every 90 days is ridiculous. If a password is sufficiently secure (i.e. long) and not reused anywhere else it should be secure for longer than the person will live. Forcing people to forget, create and memorize a new password every 90 days results in lots of variations on the same password and lots of sticky notes stuck to monitors. 
 
-* 8.5.10 Require a minimum password length of at least seven characters. 
+> 8.5.10 Require a minimum password length of at least seven characters. 
+
  * A seven character password could be brute forced in seconds if the data was ever stolen in a breach. oclHashcat can attempt thousands to millions of guesses each second depending on the number of GPU’s and the algorithm used. 
  * 12+ characters or longer if possible. 
 
-* 8.5.11 Use passwords containing both numeric and alphabetic characters.
+> 8.5.11 Use passwords containing both numeric and alphabetic characters.
+
  * Allow users to enter in any printable characters for their password, including spaces, but enforcing longer passwords increases entropy without forcing the user to remember odd punctuation placement. Again, see: http://xkcd.com/936/ 
 
-* 8.5.12 Do not allow an individual to submit a new password that is the same as any of the last four passwords he or she has used.
+>8.5.12 Do not allow an individual to submit a new password that is the same as any of the last four passwords he or she has used.
+
  * Not really an issue if you aren’t forcing the user to change the password every 90 days. 
  * Who doesn’t just increment the number at the end by one anyway? 
  * MyPassword1, MyPassword2, etc... 
@@ -218,7 +222,7 @@ Nobody likes a blow hard.
 
 # Resources
 
-* rootsh
+* ### rootsh
  * Root Shell
  * Logs all shell commands and output to log files
  * http://sourceforge.net/projects/rootsh/
