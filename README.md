@@ -226,41 +226,54 @@ Nobody likes a blow hard.
  * Root Shell
  * Logs all shell commands and output to log files
  * http://sourceforge.net/projects/rootsh/
-* Snort
+ 
+### Snort
  * Open source network intrusion prevention (IPS) and intrustion detection (IDS) system.
  * http://snort.org/
-* OWASP
+ 
+### OWASP
 Open Web Application Security Project
 https://www.owasp.org/
-* PCI Compliance
+
+### PCI Compliance
  * Payment Card Industry Standards Association
  * Visa, Mastercard, JCB, etc…
  * Through but at times flawed or dated application security policies and procedures
  * https://www.pcisecuritystandards.org/
-* NIST
+
+### NIST
  * National Institute of Standards and Technology
  * http://csrc.nist.gov/ - Computer Security Division
-* NIST SP 800-130
+ 
+### NIST SP 800-130
  * A Framework for Designing Cryptographic Key Management Systems
  * http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-130.pdf
-* Does My Password Go up to Eleven? The Impact of Password Meters on Password Selection
+ 
+### Does My Password Go up to Eleven? The Impact of Password Meters on Password Selection
  * Arstechnica summary: http://arstechnica.com/security/2013/05/its-official-password-strength-meters-arent-security-theater/
  * Paper: https://research.microsoft.com/pubs/192108/chi13b.pdf
-* zxcvbn
+
+### zxcvbn
  * zxcvbn: realistic password strength estimation: https://tech.dropbox.com/2012/04/zxcvbn-realistic-password-strength-estimation/
  * https://github.com/dropbox/zxcvbn
-* PBKDF2
+ 
+### PBKDF2
  * http://tools.ietf.org/html/rfc2898
-* bcrypt
+ 
+### bcrypt
  * http://bcrypt.sourceforge.net/
-* scrypt
+ 
+### scrypt
  * http://www.tarsnap.com/scrypt.html
-* Log-o
+ 
+### Log-o
  * Nodejs centralized centralized syslog server
  * https://github.com/stancarney/log-o
  * https://github.com/stancarney/log-o-client
-* BIP32
+ 
+### BIP32
  * https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
  * http://bip32.org/
-* Abe
+ 
+### Abe
  * https://github.com/bitcoin-abe/bitcoin-abe
