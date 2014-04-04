@@ -223,56 +223,46 @@ Nobody likes a blow hard.
 # Resources
 
 ### [rootsh](http://sourceforge.net/projects/rootsh/)
- * Root Shell
- * Logs all shell commands and output to log files
+ * Rootsh is a wrapper for shells which logs all echoed keystrokes and terminal output to a file and/or to syslog. It's main purpose is the auditing of users who need a shell with root privileges. They start rootsh through the sudo mechanism.
  
-### Snort
- * Open source network intrusion prevention (IPS) and intrustion detection (IDS) system.
- * http://snort.org/
+### [Snort](http://snort.org/)
+ * Snort® is an open source network intrusion prevention and detection system (IDS/IPS) developed by Sourcefire. Combining the benefits of signature, protocol, and anomaly-based inspection, Snort is the most widely deployed IDS/IPS technology worldwide. 
  
-### OWASP
-* Open Web Application Security Project
-* https://www.owasp.org/
+### [OWASP](https://www.owasp.org/)
+ * The Open Web Application Security Project (OWASP) is a 501(c)(3) worldwide not-for-profit charitable organization focused on improving the security of software. Our mission is to make software security visible, so that individuals and organizations worldwide can make informed decisions about true software security risks.
 
-### PCI
- * Payment Card Industry Standards Association
- * Visa, Mastercard, JCB, etc…
- * Through but at times flawed or dated application security policies and procedures
- * https://www.pcisecuritystandards.org/
+### [PCI](https://www.pcisecuritystandards.org/)
+ * The PCI Security Standards Council is an open global forum for the ongoing development, enhancement, storage, dissemination and implementation of security standards for account data protection.
+ * The PCI Security Standards Council’s mission is to enhance payment account data security by driving education and awareness of the PCI Security Standards. The organization was founded by American Express, Discover Financial Services, JCB International, MasterCard, and Visa Inc.
 
-### NIST
+### [NIST](http://csrc.nist.gov/)
  * National Institute of Standards and Technology
- * http://csrc.nist.gov/ - Computer Security Division
+ * Computer Security Division - Computer Security Resource Center
  
-### NIST SP 800-130
+### [NIST SP 800-130](http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-130.pdf)
  * A Framework for Designing Cryptographic Key Management Systems
- * http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-130.pdf
  
-### Does My Password Go up to Eleven? The Impact of Password Meters on Password Selection
+### [Does My Password Go up to Eleven? The Impact of Password Meters on Password Selection](https://research.microsoft.com/pubs/192108/chi13b.pdf)
  * Arstechnica summary: http://arstechnica.com/security/2013/05/its-official-password-strength-meters-arent-security-theater/
- * Paper: https://research.microsoft.com/pubs/192108/chi13b.pdf
 
-### zxcvbn
+### [zxcvbn](https://github.com/dropbox/zxcvbn)
  * zxcvbn: realistic password strength estimation: https://tech.dropbox.com/2012/04/zxcvbn-realistic-password-strength-estimation/
- * https://github.com/dropbox/zxcvbn
  
-### PBKDF2
- * http://tools.ietf.org/html/rfc2898
+### [PBKDF2](http://tools.ietf.org/html/rfc2898)
+ * http://en.wikipedia.org/wiki/PBKDF2
  
-### bcrypt
- * http://bcrypt.sourceforge.net/
+### [bcrypt](http://bcrypt.sourceforge.net/)
+ * Bcrypt is a cross platform file encryption utility. Encrypted files are portable across all supported operating systems and processors. Passphrases must be between 8 and 56 characters and are hashed internally to a 448 bit key. However, all characters supplied are significant. The stronger your passphrase, the more secure your data.
  
-### scrypt
- * http://www.tarsnap.com/scrypt.html
+### [scrypt](http://www.tarsnap.com/scrypt.html)
+ * Memory-hard password-based key derivation algorithm.
  
-### Log-o
- * Nodejs centralized centralized syslog server
- * https://github.com/stancarney/log-o
+### [Log-o](https://github.com/stancarney/log-o)
+ * Nodejs centralized centralized syslog server.
  * https://github.com/stancarney/log-o-client
  
-### BIP32
- * https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+### [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)
  * http://bip32.org/
  
-### Abe
- * https://github.com/bitcoin-abe/bitcoin-abe
+### [Abe](https://github.com/bitcoin-abe/bitcoin-abe)
+ * A free block chain browser for Bitcoin-based currencies.
