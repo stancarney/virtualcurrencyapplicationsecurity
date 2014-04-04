@@ -174,7 +174,7 @@ I’ve recently dropped using CDN’s from anything I’ve done recently and sta
 
 The information in the Hosts section on passwords is applicable to your application as well. Try encourage the use of long passphrases, 12+ chars long and don’t limit what characters they can use. Recent studies have shown that password strength meters help encourage users to pick stronger passwords. Dropbox has a fantastic strength meter called (zxcvbn)[#zxcvbn].
 
-Use something like (PBKDF2)[#pbkdf2], (bcrypt)[#bcrypt], or (scrypt)[#scrypt] for stored passwords. PBKDF2 seems to be falling out of favour recently due it’s ability to be run efficiently on GPU’s.
+Use something like (PBKDF2)[#pbkdf2], (bcrypt)[#bcrypt], or (scrypt)[#scrypt] for stored passwords. (PBKDF2)[#pbkdf2] seems to be falling out of favour recently due it’s ability to be run efficiently on GPU’s.
 
 ## 2-Factor
 
@@ -200,11 +200,11 @@ Don’t put your hot wallet on your web server or application server. Place it o
 
 It isn’t stated anywhere (yet) but your virtual currency business should be able to cover the loss of a stolen hot wallet. If you do ‘cold wallets’ correctly there should be no risk of loss.
 
-BIP32 - Hierarchical Deterministic Wallets are currently the safest way to support Bitcoin cold wallets. There is support for other alt currencies* as well but you are going to have to work for it. Armory has a nice breakdown of how to do offline/online wallets with their software here: https://bitcoinarmory.com/about/using-our-wallet/.
+(BIP32)[#bip32] - Hierarchical Deterministic Wallets are currently the safest way to support Bitcoin cold wallets. There is support for other alt currencies as well but you might have to work for it. Armory has a nice breakdown of how to do offline/online wallets with their software here: https://bitcoinarmory.com/about/using-our-wallet/.
 
 # Blockchain
 
-If you are going to be sending and receiving transactions it may make sense to run nodes on the virtual currency networks you support and use something like Abe* to query/investigate the blockchain opposed to using a third party service.
+If you are going to be sending and receiving transactions it may make sense to run nodes on the virtual currency networks you support and use something like (Abe)[#abe] to query/investigate the blockchain opposed to using a third party service.
 
 # Bug Bounty
 
