@@ -94,14 +94,14 @@ It is possible to make the management console an extension of your office or oth
 
 Hosting your application on popular open source software is preferred. Even if you don’t need access to the source code you are able to benefit from a community that shares your concerns on security (hopefully). There are several hardening guides available on the internet depending on your operating system of choice. Each will contain a bunch of suggestions on how to secure the OS from unauthorized access. The core of each list will contain things like:
 
-Disable unused services
-i.e. nsfd, portmap, etc...
-Remove unused software packages
-i.e. mysql, X, KDE, etc...
-Disable direct root/admin login
-Disable all shared accounts
-Enforce long passwords
-http://xkcd.com/936/
+* Disable unused services
+ * i.e. nsfd, portmap, etc...
+* Remove unused software packages
+ * i.e. mysql, X, KDE, etc...
+* Disable direct root/admin login
+ * Disable all shared accounts
+* Enforce long passwords
+ * http://xkcd.com/936/
 
 It is also a good idea to use a host based intrusion detection (HID*) system like OSSEC to monitor files and running services on individual servers for changes. It requires some setup but it is worth knowing when an important file changes without your knowledge.
 
