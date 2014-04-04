@@ -1,4 +1,4 @@
-# Overview
+# Purpose
 
 The purpose of this guide is to better educate application developers, specifically entrepreneurial, application developers and infrastructure personnel on best practices used to secure virtual currency web applications. They are based on my experiences working with payment technologies over the last 15 years.
 
@@ -31,7 +31,7 @@ Even with a DDoS protection service in front of your public IP a listening socke
 
 There is a bunch of things wrong with the above diagram, it has been simplified to articulate a point, but the one in question is if an attacker can exploit the application server and gain escalated privileges they are right next door to your sensitive data. In fact they don’t need to even try to exploit the database. They probably could just mimic another connection from your application server, assuming it has the ability to read data from the database, and call it a day.
 
-What PCI* and other security practices call for is a level of indirection between the internet and servers that have direct access to sensitive data. Ideally at Layer 7 of the OSI model.
+What (PCI)[#pci] and other security practices call for is a level of indirection between the internet and servers that have direct access to sensitive data. Ideally at Layer 7 of the OSI model.
 
 
 In the above network, which still has many things wrong with it, there is now a level of indirection between the internet and the only server that has direct access to sensitive data. In this case the web server is running Nginx or Apache and configured to ‘proxy’ the requests back to the application server. It doesn’t have to perform any other activity like serving static content, it is just there for a level of indirection. The proxying causes the web server to open a new connection to the application server and translate the traffic between the connected internal socket and the external socket using standard HTTP. If an attacker is successful in exploiting Nginx and gains shell access over a socket they still can’t do much. Maybe snoop other traffic flowing through the server, which your host based intrusion detection (HID*) system should alert on.
@@ -235,7 +235,7 @@ Nobody likes a blow hard.
 Open Web Application Security Project
 https://www.owasp.org/
 
-### PCI Compliance
+### PCI
  * Payment Card Industry Standards Association
  * Visa, Mastercard, JCB, etc…
  * Through but at times flawed or dated application security policies and procedures
