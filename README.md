@@ -222,7 +222,7 @@ Nobody likes a blow hard.
 
 # Resources
 
-* ### rootsh
+### rootsh
  * Root Shell
  * Logs all shell commands and output to log files
  * http://sourceforge.net/projects/rootsh/
