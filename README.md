@@ -19,7 +19,7 @@ Like protective clothing, the way to approach network security is with layers. A
 
 Below is an example of a network utilizing two firewalls, an internal and an external, running intrusion protection systems. The NAT Firewall/IPS and the External Firewall/IPS could be comprised into one physical device as long as the outbound traffic restrictions mentioned below are respected. The rest of the images in this document may show several firewalls but in reality they could be combined. Having an external firewall and an internal firewall that are physically separated is still a good idea though. Having one firewall with all traffic routing through it would represent a signal point in which an attacker could gain access to everything.
 
-![Example Network](example_network.svg)
+<object data="example_network.svg" type="image/svg+xml"/>
 
 # Public Interface
 
