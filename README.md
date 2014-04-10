@@ -1,9 +1,11 @@
 
 # Virtual Currency Application Security
 
-[A How-To Guide on Securing Your Bitcoin or Other Virtual Currency Web Application.](http://stancarney.github.io/virtualcurrencysecurity/)
+A How-To Guide on Securing Your Bitcoin or Other Virtual Currency Web Application.
 
-Markdown available: https://github.com/stancarney/virtualcurrencysecurity/tree/gh-pages
+Github Page: http://stancarney.github.io/virtualcurrencysecurity/
+
+Markdown: https://github.com/stancarney/virtualcurrencysecurity/tree/gh-pages
 
 ## License 
 
