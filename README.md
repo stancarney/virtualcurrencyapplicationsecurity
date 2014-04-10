@@ -21,7 +21,7 @@ Below is an example of a network utilizing two firewalls, an internal and an ext
 
 
 <object data="example_network.svg" type="image/svg+xml">
-  
+  <img src="yourfallback.jpg" />
 </object>
 
 
