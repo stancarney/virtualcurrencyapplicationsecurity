@@ -1,11 +1,11 @@
 Virtual Currency Application Security
 =====================================
 
-# Purpose
+## Purpose
 
 The purpose of this guide is to educate application developers, specifically entrepreneurial application developers, and infrastructure personnel on best practices used to secure virtual currency web applications. They are based on my experiences working with payment technologies over the last 15 years.
 
-# Personnel
+## Personnel
 
 This might seem like an odd place to start but it is important, don’t skip it. Most of the other sections in this document can easily be undone by a key employee’s carelessness or malice. The application you build is only going to be as secure as the people working on it. As the understanding of application security grows more focus will be applied to ‘social engineering’ exploits opposed to technical exploits. It is fundamentally important that the individuals who have write access to your source code repository or elevated production privileges be ‘trustworthy’, in both their abilities and intentions. How you go about determining this is up to you but emphasis needs to be placed on it. It is recommended to restrict direct write access to production repositories for new hires. Have them work with experienced ‘trusted’ developers on feature branches or forks which are to be reviewed before being merged into the main repository. 
 
@@ -16,7 +16,7 @@ Every source code commit or configuration change needs to be reviewed by someone
 
 Try to ensure any inappropriate behaviour would have to involve collusion of multiple individuals to be successful. Responsibility for errors and omissions should be the responsibility of the original developer (employee, whoever) and the reviewer.
 
-# Network
+## Network
 
 Like protective clothing, the way to approach network security is with layers. Any route into a production environment should involve crossing multiple layers, both on the way in and on the way out. Each layer should be locked down to a specific class of server performing one role, like an application server or a database server. Don’t combine roles onto a single server. Deploying an Intrusion Protection System [(IPS)](#ids-vs-ips) between each layer in which all traffic must transverse adds overhead and becomes difficult to do on some virtualized environments but if an outer layer is ever compromised you want abnormal internal traffic to light up alerts like a christmas tree.
 
@@ -24,7 +24,7 @@ Below is an example of a network utilizing two firewalls, an internal and an ext
 
 ![Example Network](example_network.svg)
 
-# Public Interface
+## Public Interface
 
 Historically disclosing your public IP wasn’t a big deal. Today it should be avoided at all costs. There are cases where historical information available on sites like www.domaintools.com allowed attackers to determine the hosting provider for a site, from the IP block owner, after they introduced a DDoS protection system and remotely socially engineer their way into gaining root access to a server.
 
@@ -42,7 +42,7 @@ What [PCI](#pci) and other security practices call for is a level of indirection
 
 In the above network, which still has many things wrong with it, there is now a level of indirection between the internet and the only server that has direct access to sensitive data. In this case the web server is running Nginx or Apache and configured to ‘proxy’ the requests back to the application server. It doesn’t have to perform any other activity like serving static content, it is just there for a level of indirection. The proxying causes the web server to open a new connection to the application server and translate the traffic between the connected internal socket and the external socket using standard HTTP. If an attacker is successful in exploiting Nginx and gains shell access over a socket they still can’t do much. Maybe snoop other traffic flowing through the server, which your host based intrusion detection (HID) system should alert on.
 
-# Layers
+## Layers
 
 If you are reading this document in a linear fashion we now have a DDoS protection service ‘layer’ in front of our public IP address, a web server listening on the public interface before proxying requests back to our single application server which reads and writes data to our database. It is a good start and would put you in front of some of the other configurations I’ve seen over the years but in reality the system would still be highly exposed and to make matters worse if something ever happened you may never know. The attacker would most likely cover their tracks and if you did manage to determine your were exploited, say an anonymous pastebin.com post containing all your users, you would be in the dark about how it was done.
 
@@ -52,7 +52,7 @@ Rather than waiting for a pastebin.com to show up it is better to isolate indivi
 
 In this example incoming HTTP traffic passes through a Firewall/IPS device. It actively inspects traffic looking for ‘rule violations’ and when one is detected it actively blocks the remote address and drops the connection. It is important that it also sends out alerts to ensure you are up to speed on what is happening. The web server proxies the HTTP request to the application server which passes through another Firewall/IPS combination device. The application is then able to read and write to the database by connecting through a Firewall/IPS device in much the same fashion.
 
-# IDS vs IPS
+## IDS vs IPS
 
 Intrusion Detection Systems (IDS) typically sit independent of firewalls. They passively monitor all traffic presented to them trying to find rule matches to alert on. A common configuration for IDS is to enable port ‘monitoring’ on a switch so that all network traffic is ‘mirrored’ on an interface available to the IDS system. Once a rule match is found the IDS system sends out an alert and it is up to the alert recipients to determine the course of action to take. If your internal IDS system detects a port scan originating from your web server against your application server you better sort it out in a hurry.
 
@@ -70,7 +70,7 @@ For payment systems (especially virtual currencies) using an IPS on all perimete
 
 [Snort](#snort) is a very good, if not the best, IPS/IDS system available. It works well in combination with Linux or BSD based firewalls (a server with a bunch of network cards deployed in the role of a firewall).
 
-# Restrict Outbound
+## Restrict Outbound
 
 Now that we have talked about incoming connections and appropriate layering what happens if your system needs to call out to remote systems on the internet? Most people overlook the importance of closing all possible methods of egress with the exception of what is absolutely required. In some cases it might mean creating another bulkhead (network) and setting up your own equivalent internal service such as a time server or an OS package server (apt, yum, etc...). 
 
@@ -86,7 +86,7 @@ Never use the same IP address as your web server for outbound connections. All t
 
 The above diagram contains just as many firewalls as it does other systems. In reality they don’t need to be physically separate firewalls but it is a good idea. If you want to go completely paranoid use a different firewall manufacturer at each level in case an exploit is discovered in one of them. 
 
-# Sending Email
+## Sending Email
 
 I was going to mention this is the above section on restricting outbound traffic but I feel it needs a bit more attention. There are a few things to be cautious of when sending emails. 
 
@@ -94,13 +94,13 @@ Use an external SMTP provider such as SendGrid or MailGun and send email’s usi
 
 As with all outbound traffic originating from your production environment, none should egress out through the web server’s IP address.
 
-# Management Console
+## Management Console
 
 A management console is a controlled entry point into the secure production environment used for maintenance and other authorized activities. In order to directly access a system or firewall within the environment, other than how the application is supposed to function, a user (i.e. production support, release management, etc…) must connect and login using their unique credentials; ideally 2-factor. All access, authorized or not, should immediately send an alert. All authorized activities should be known before an alert is triggered. All activity should be logged.
 
 It is possible to make the management console an extension of your office or other ‘privileged location’ but it becomes easy to blur the lines of where one environment starts and the other stops. I’m a fan of enforcing a VPN connection with individually issued certificates in order to connect to the management console, even from a ‘privileged location’. This makes it easy to see the distinction between the production environment and others as well as provides quick 2-factor authentication.
 
-# Hosts
+## Hosts
 
 Hosting your application on popular open source software is preferred. Even if you don’t need access to the source code you are able to benefit from a community that shares your concerns on security (hopefully). There are several hardening guides available on the internet depending on your operating system of choice. Each will contain a bunch of suggestions on how to secure the OS from unauthorized access. The core of each list will contain things like:
 
@@ -115,7 +115,7 @@ Hosting your application on popular open source software is preferred. Even if y
 
 It is also a good idea to use a host based intrusion detection (HID*) system like OSSEC to monitor files and running services on individual servers for changes. It requires some setup but it is worth knowing when an important file changes without your knowledge.
 
-# Authentication
+## Authentication
 
 Passwords is area where PCI falls down in my opinion. In ‘Requirement 8: Assign a unique ID to each person with computer access’ they state the following:
 
@@ -142,11 +142,11 @@ Don’t share accounts. Your services can run as a unique user but multiple peop
 
 As your environment grows having a centralized authentication server eases administration. Creating another class of server hosting OpenLDAP or a similar service in which all servers in the production environment rely on for authentication helps when adding or removing users to the environment. If a central authentication server is used make sure it is locked down like all other hosts in the production environment. Only authorized users should be allowed to add, modify or remove users and permissions. Alerting for any change, authorized or not, is also a good idea.
 
-# Patches
+## Patches
 
 Apply patches frequently. How frequently depends on your scenario. PCI and other security programs want policies in place for regular updates and security patches. With most modern operating systems providing package management and updates it makes this fairly easy as long as it is monitored. Check for security updates daily and apply them based on their impact to your system. Sooner is almost always better.
 
-# Encryption
+## Encryption
 
 All sensitive ‘data at rest’ should be encrypted in some fashion, AES 256, one way hashing, etc... Actually performing the encryption is relatively easy, the hard part is key management. Too many people that think running everything out of an encrypted partition that is mounted at boot time based on the correct passphrase being entered is sufficient. It is not. What happens when you fire the individual who knows the passphrase? Who entered the passphrase last? What happens if the machine is compromised while the partition is mounted?
 
@@ -154,11 +154,11 @@ Encryption is less about the data and more about the management of it. What work
 
 Using this approach all sensitive data stored in your application’s database is encrypted at the ‘field’ or ‘column’ level and only authorized calls from the application can decrypt it. Monitoring the encryption server for usage can also be an indicator of a breach. It is worth pointing out that there is currently no good open source implementation of this type of encryption server. Historically they have been built in house.
 
-# Key Custodians
+## Key Custodians
 
 The concept of ‘Key Custodians’ are directly out of PCI compliance (and [NIST](#nist)). They are people in your organization who have the added role of memorizing a unique passphrase used by the encryption server when it is started. Ideally there are N key custodians and the encryption server would only require N-1 (or similar) passphrases to be entered on application start in order to unlock the other keys for use.
 
-# Logging
+## Logging
 
 Centralizing, reviewing and alerting on events that happen within your production environment is key in ensuring a secure application. Logs also need to be protected from manipulation as it is a common technique of attackers to attempt to delete logs in order to cover up their tracks. Immediately copying logs off servers to a protected centralized log server using something like syslog (rsyslog, ksyslog, etc…) and [Log-o](#log-o) works well.
 
@@ -168,45 +168,45 @@ It is also important to review logs but rather than waiting to review them it is
 
 Sending out alerts on key events is only useful if you have a plan on how to deal with them. If the production database is logged into by a member of your organization, somebody should be following up (ideally before they logged in) as to what they are doing. Sending out alerts on exceptions and errors is also important. An HTTP 404 might not seem like a big deal but it is better to be made aware of somebody snooping around your site opposed to ignoring it.
 
-# Timeserver
+## Timeserver
 
 Every system on your network needs to sync their clocks against a timeserver. PCI wants you to host your own time servers and configure all other servers to use them. They are allowed to sync to external pools permitted by your outbound firewall.
 
-# Application
+## Application
 
 The Open Web Application Security Project (OWASP) is a good resource for guidelines on how to build a secure application. They have recently updated their ‘top 10’ exploit list with examples on how to protect against them. Regardless of guidelines and policies it comes down to you to know the frameworks, technology, and most importantly the code you write to build your application and how they can be exploited. All developers on your team should be familiar with the OWASP top 10 and the development environment/frameworks used should make doing ‘the secure thing’ the default, opposed to forcing developers to repeat themselves every time to enforce security. i.e. scrubbing form inputs.
 
-## Content Distribution Networks
+### Content Distribution Networks
 
 Content distribution networks (CDN) are a great way to improve the page load speed and reduce the bandwidth associated with your web site. If every application included their static resources from the same CDN your users would be met with faster page load times because JQuery, Bootstrap, or whatever would be loaded from their browser cache. Seems to make sense. Except you have no idea what security precautions those CDN’s have in place. It is not unreasonable to think that as a CDN grows in popularity it will become a target for malicious individuals. Especially if the stakes are high enough.
 
 I’ve recently dropped using CDN’s from anything I’ve done recently and started to deploy an everything.js and an everything.css file which are concatenated and minified versions of all the libraries the system requires. It gives you more control over caching and removes a possible vector of attack. You have to apply some intelligence in your own scenario to get page speed up. Don’t just drop a spinner in the middle of the page for 2.5 seconds...
 
-## Passwords
+### Passwords
 
 The information in the Hosts section on passwords is applicable to your application as well. Try encourage the use of long passphrases, 12+ chars long and don’t limit what characters they can use. Recent studies have shown that password strength meters help encourage users to pick stronger passwords. Dropbox has a fantastic strength meter called (zxcvbn)[#zxcvbn].
 
 Use something like [PBKDF2](#pbkdf2), [bcrypt](#bcrypt), or [scrypt](#scrypt) for stored passwords. [PBKDF2](#pbkdf2) seems to be falling out of favour recently due it’s ability to be run efficiently on GPU’s.
 
-## 2-Factor
+### 2-Factor
 
 Depending on the nature of your application 2-Factor authentication might be optional. If you are doing anything in the virtual currency space I think the time has come to make 2-Factor mandatory on signup. With the prevalence of phones capable of receiving SMS messages I’m disappointed in how few sites enforce mandatory 2-Factor authentication. You don’t need to enforce 2-Factor all the time, just at points in the application where an attacker would seek to defraud, hijack, destroy, or otherwise compromise your application or your users. When sending funds, changing email, password, cell phone number, etc... The important part is enabling 2-Factor by default and making it known it is for the users protection and nothing else.
 
-## Notifications
+### Notifications
 
 This has finally started to pick up steam but it still isn’t consistent. Whenever an action is taken by a user that is deemed to be of consequence send them a notification, email, SMS, mobile app, whatever. If the user has made the change themselves they ignore it, but if they didn’t it will spur them into action to quell the issue shortly after it happened and not 2 weeks later when they finally login. Send notifications to both the new and the old email if they are performing an email change, both phones if changing numbers, etc...
 
-## GeoIP
+### GeoIP
 
 In many cases it makes sense to determine where an individual is accessing your site from and use historical records to determine the probability of the account being accessed by another party. For example if the user has logged in from Canada for the last 10 times then all of sudden they login from the US, it might be wise to consider that login suspicious. I’m also a huge fan of Tor but if you are providing a service that requires performing KYC on individuals and companies blocking known Tor exit nodes also makes sense in order to protect your customers from phishing attacks and unauthorized logins.
 
-# Physical
+## Physical
 
 If you are hosting physical hardware yourself it is important to restrict access in order to eliminate attacks originating from within the data center. No amount of intrusion protection will help if somebody is allowed to plug something into your servers or network without your knowledge.
 
 Disable any unused hardware such as USB or ethernet ports in servers and switches. Don’t give one person full authority over your hardware, it is better to have multiple people responsible for each others actions in order to eliminate an individual acting alone. Always try to ensure people will have to collude with each other in order to comprise any aspect of your system.
 
-# Wallets
+## Wallets
 
 Don’t put your hot wallet on your web server or application server. Place it on it’s own class of servers within it’s own network isolated from each other like everything else. If you are using the standard daemons (bitcoind, litecoind, etc…) enable SSL on the RPC requests. Encrypt the private keys on disk and require manual intervention on system start to decrypt them. In this case disk encryption would suffice as you aren’t trying to protect the keys from use when the system is running, you are protecting the keys if somebody was to steal the server; or socially engineer your Tier 1 hosting provider into rebooting the server and giving root console access over the phone to an unknown third party.
 
@@ -214,25 +214,25 @@ It isn’t stated anywhere (yet) but your virtual currency business should be ab
 
 [BIP32](#bip32) - Hierarchical Deterministic Wallets are currently the safest way to support Bitcoin cold wallets. There is support for other alt currencies as well but you might have to work for it. Armory has a nice breakdown of how to do offline/online wallets with their software here: https://bitcoinarmory.com/about/using-our-wallet/.
 
-# Blockchain
+## Blockchain
 
 If you are going to be sending and receiving transactions it may make sense to run nodes on the virtual currency networks you support and use something like (Abe)[#abe] to query/investigate the blockchain opposed to using a third party service.
 
-# Bug Bounty
+## Bug Bounty
 
 Create a bug bounty program that rewards submissions as well as defines timelines for disclosure. Something like 90 days to give you enough time to investigate. It sets a level of commitment to the community and buys you some time to fix the issue.
 
-# Secrecy
+## Secrecy
 
 Don’t disclose any details about your infrastructure publicly, ever. This includes network diagrams, routers, switches, firewalls, etc... Make sure any information posted to StackExchange, Github, etc… doesn’t disclose any important details about the internal workings or policies of your application or organization. You never know what details attackers will find useful. This is easy said than done but unless you plan to fully open source something very little good can come of leaking information out. Don’t worry about web server’s disclosing themselves or high level frameworks in use by your system. It doesn’t take long to figure out a webpage is using JQuery. Just don’t disclose things that aren’t normally disclosed or available by inspecting web pages or headers, like your kernel version or what type of database you run.
 
-# Don’t Poke The Bear
+## Don’t Poke The Bear
 
 Silly this has to be mentioned, but be humble. Don’t run your mouth on forums talking about how superior your service/application/product is. It only isolates the community further and no good can come from it. In fact if you set yourself up as an ass people will come out of the woodwork just to take a run at you. You have everything to lose and they have everything to gain.
 
 Nobody likes a blow hard.
 
-# Resources
+## Resources
 
 ### [rootsh](http://sourceforge.net/projects/rootsh/)
  * Rootsh is a wrapper for shells which logs all echoed keystrokes and terminal output to a file and/or to syslog. It's main purpose is the auditing of users who need a shell with root privileges. They start rootsh through the sudo mechanism.
