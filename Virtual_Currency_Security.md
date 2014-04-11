@@ -1,3 +1,6 @@
+Virtual Currency Application Security
+=====================================
+
 # Purpose
 
 The purpose of this guide is to educate application developers, specifically entrepreneurial application developers, and infrastructure personnel on best practices used to secure virtual currency web applications. They are based on my experiences working with payment technologies over the last 15 years.
