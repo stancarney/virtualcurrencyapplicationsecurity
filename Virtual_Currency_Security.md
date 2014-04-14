@@ -1,9 +1,3 @@
-# Virtual Currency Application Security
-
-## Purpose
-
-The purpose of this guide is to educate application developers, specifically entrepreneurial application developers, and infrastructure personnel on best practices used to secure virtual currency web applications. They are based on my experiences working with payment technologies over the last 15 years.
-
 # Personnel
 
 This might seem like an odd place to start but it is important, don’t skip it. Most of the other sections in this document can easily be undone by a key employee’s carelessness or malice. The application you build is only going to be as secure as the people working on it. As the understanding of application security grows more focus will be applied to ‘social engineering’ exploits opposed to technical exploits. It is fundamentally important that the individuals who have write access to your source code repository or elevated production privileges be ‘trustworthy’, in both their abilities and intentions. How you go about determining this is up to you but emphasis needs to be placed on it. It is recommended to restrict direct write access to production repositories for new hires. Have them work with experienced ‘trusted’ developers on feature branches or forks which are to be reviewed before being merged into the main repository. 
