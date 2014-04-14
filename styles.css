@@ -69,12 +69,7 @@ a {
 }
 
 a:hover {
-    text-decoration: blink;
     color: green;
-}
-
-a:visited {
-    color: black;
 }
 
 ul, ol {
@@ -145,3 +140,14 @@ hr {
     text-align:center;
 }
 
+.section h1 {
+    font-size:200%;
+}
+
+#header {
+    margin-bottom: 25px;
+}
+
+#footer {
+    margin-top: 25px;
+}
