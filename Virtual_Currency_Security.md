@@ -215,11 +215,11 @@ If you are going to be sending and receiving transactions it may make sense to r
 
 # Bug Bounty
 
-Create a bug bounty program that rewards submissions as well as defines timelines for disclosure. Something like 90 days to give you enough time to investigate. It sets a level of commitment to the community and buys you some time to fix the issue.
+Create a bug bounty program that rewards submissions as well as defines timelines for disclosure. Something like 90 days to give you enough time to investigate. It sets a level of commitment to the community and buys you some time to fix the issue. 
 
 # Secrecy
 
-Don’t disclose any details about your infrastructure publicly, ever. This includes network diagrams, routers, switches, firewalls, etc... Make sure any information posted to StackExchange, Github, etc… doesn’t disclose any important details about the internal workings or policies of your application or organization. You never know what details attackers will find useful. This is easy said than done but unless you plan to fully open source something very little good can come of leaking information out. Don’t worry about web server’s disclosing themselves or high level frameworks in use by your system. It doesn’t take long to figure out a webpage is using JQuery. Just don’t disclose things that aren’t normally disclosed or available by inspecting web pages or headers, like your kernel version or what type of database you run.
+Don’t disclose any details about your infrastructure publicly, ever. This includes network diagrams, routers, switches, firewalls, etc... Make sure any information posted to StackExchange, Github, etc… doesn’t disclose any important details about the internal workings or policies of your application or organization. You never know what details attackers will find useful. This is easier said than done but unless you plan to fully open source something very little good can come of leaking information to the outside. Don’t worry about web server’s disclosing themselves or high level frameworks in use by your system. It doesn’t take long to figure out a webpage is using JQuery. Just don’t disclose things that aren’t normally disclosed or available by inspecting web pages or headers, like your kernel version or what type of database you run.
 
 # Don’t Poke The Bear
 
