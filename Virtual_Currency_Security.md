@@ -225,7 +225,7 @@ Don’t disclose any details about your infrastructure publicly, ever. This incl
 
 Silly this has to be mentioned, but be humble. Don’t run your mouth on forums talking about how superior your service/application/product is. It only isolates the community further and no good can come from it. In fact if you set yourself up as an ass people will come out of the woodwork just to take a run at you. You have everything to lose and they have everything to gain.
 
-Nobody likes a blow hard.
+Nobody likes a blowhard.
 
 # Resources
 
